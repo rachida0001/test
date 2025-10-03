@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>For Mon Kard ❤️</title>
   <style>
     body {
@@ -14,15 +15,16 @@
       font-family: "Comic Sans MS", cursive, sans-serif;
       text-align: center;
       overflow: hidden;
+      padding: 20px;
     }
     .message {
-      font-size: 40px;
+      font-size: 6vw;
       color: #fff;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
       position: relative;
     }
     .heart {
-      font-size: 80px;
+      font-size: 12vw;
       animation: beat 1s infinite;
       display: inline-block;
       margin-top: 10px;
@@ -32,10 +34,10 @@
       50% { transform: scale(1.3); }
     }
     .monkey {
-      font-size: 70px;
+      font-size: 10vw;
       display: inline-block;
       animation: swing 2s infinite ease-in-out;
-      margin-left: 15px;
+      margin-left: 2vw;
       cursor: pointer;
       transform-origin: top center;
     }
@@ -49,19 +51,24 @@
     }
     @keyframes jump {
       0% { transform: translateY(0); }
-      50% { transform: translateY(-50px); }
+      50% { transform: translateY(-5vw); }
       100% { transform: translateY(0); }
     }
 
-    /* Question box */
     .question {
-      margin-top: 40px;
-      font-size: 28px;
+      margin-top: 5vw;
+      font-size: 5vw;
+    }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 4vw;
+      margin-top: 2vw;
+      flex-wrap: wrap;
     }
     button {
-      font-size: 20px;
-      padding: 10px 20px;
-      margin: 10px;
+      font-size: 4vw;
+      padding: 2vw 4vw;
       border: none;
       border-radius: 10px;
       cursor: pointer;
@@ -69,22 +76,29 @@
       color: #ff4d6d;
       box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
       transition: 0.3s;
-      position: relative;
     }
     button:hover {
       background: #ff4d6d;
       color: #fff;
     }
 
-    /* Celebration hearts */
     .floating-heart {
       position: absolute;
-      font-size: 30px;
+      font-size: 8vw;
       animation: floatUp 3s linear forwards;
     }
     @keyframes floatUp {
       0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
+      100% { transform: translateY(-25vw) scale(1.5); opacity: 0; }
+    }
+
+    @media (max-width: 500px) {
+      .message { font-size: 8vw; }
+      .heart { font-size: 16vw; }
+      .monkey { font-size: 12vw; }
+      .question { font-size: 6vw; }
+      button { font-size: 5vw; padding: 3vw 5vw; }
+      .buttons { gap: 3vw; }
     }
   </style>
 </head>
@@ -98,58 +112,37 @@
 
     <div class="question">
       Do you love me too? 🥺
-      <div>
-        <button id="yesBtn">Yes 💖</button>
-        <button id="noBtn">No 😢</button>
+      <div class="buttons">
+        <button class="yesBtn">Yes 💖</button>
+        <button class="yesBtn">Yes 💖</button>
       </div>
     </div>
   </div>
 
   <script>
     const monkey = document.getElementById("monkey");
-    const noBtn = document.getElementById("noBtn");
-    const yesBtn = document.getElementById("yesBtn");
+    const yesButtons = document.querySelectorAll(".yesBtn");
 
-    // Monkey jump on click
+    // Monkey jump
     monkey.addEventListener("click", () => {
       monkey.classList.add("jump");
-      setTimeout(() => {
-        monkey.classList.remove("jump");
-      }, 600);
+      setTimeout(() => monkey.classList.remove("jump"), 600);
     });
 
-    // "No" button avoids mouse but stays visible
-    noBtn.addEventListener("mouseover", () => {
-      let offsetX = (Math.random() * 200 - 100); // random left/right
-      let offsetY = (Math.random() * 200 - 100); // random up/down
-
-      // Get current position
-      let rect = noBtn.getBoundingClientRect();
-      let newX = rect.left + offsetX;
-      let newY = rect.top + offsetY;
-
-      // Keep button inside the window
-      newX = Math.max(0, Math.min(window.innerWidth - noBtn.offsetWidth, newX));
-      newY = Math.max(0, Math.min(window.innerHeight - noBtn.offsetHeight, newY));
-
-      noBtn.style.position = "absolute";
-      noBtn.style.left = newX + "px";
-      noBtn.style.top = newY + "px";
-    });
-
-    // "Yes" button celebration
-    yesBtn.addEventListener("click", () => {
-      for (let i = 0; i < 20; i++) {
-        let heart = document.createElement("div");
-        heart.classList.add("floating-heart");
-        heart.innerHTML = (i % 2 === 0) ? "❤️" : "🐒";
-        heart.style.left = Math.random() * window.innerWidth + "px";
-        heart.style.top = window.innerHeight - 50 + "px";
-        document.body.appendChild(heart);
-
-        setTimeout(() => { heart.remove(); }, 3000);
-      }
-      alert("Yaaay!! I knew it ❤️🐒💖");
+    // Yes buttons celebration
+    yesButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        for (let i = 0; i < 20; i++) {
+          const heart = document.createElement("div");
+          heart.classList.add("floating-heart");
+          heart.innerHTML = i % 2 === 0 ? "❤️" : "🐒";
+          heart.style.left = Math.random() * window.innerWidth + "px";
+          heart.style.top = window.innerHeight - 50 + "px";
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 3000);
+        }
+        alert("Yes! I knew it 😏❤️🐒");
+      });
     });
   </script>
 </body>
